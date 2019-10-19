@@ -33,7 +33,20 @@ var UIController = (function(){
 // GLOBAL APP Controller
 var controller = (function(budgetCtrl,UICtrl){
     
-    var DOMstrings = UIController.getDOMstrings();
+    var setupEventListeners = function(){
+        var DOMstrings = UIController.getDOMstrings();
+
+        document.querySelector(DOMstrings.inputButton).addEventListener('click', function() {
+            ctrlAddItem();
+        });
+
+        document.addEventListener('keypress', function(event){
+            //code is 13 in case of return key press. Some browsers don't support 'keyCode', so 'which' is for them
+              if(event.keyCode === 13 || event.which === 13){
+                ctrlAddItem();
+              }
+        });
+    };
 
     var ctrlAddItem = function(){
         //1. Get Input Data
@@ -43,18 +56,15 @@ var controller = (function(budgetCtrl,UICtrl){
         //3. Add the item to the UI
         //4. Calculate the budget
         //5. Display the budget on the UI
-        console.log(input);
+    };
+
+    return {
+        init: function(){
+            console.log('Application has started');
+            setupEventListeners();
+        }
     }
 
-    document.querySelector(DOMstrings.inputButton).addEventListener('click', function() {
-        ctrlAddItem();
-    });
-
-    document.addEventListener('keypress', function(event){
-        //code is 13 in case of return key press. Some browsers don't support 'keyCode', so 'which' is for them
-          if(event.keyCode === 13 || event.which === 13){
-            ctrlAddItem();
-          }
-    });
-
 })(budgetController,UIController);
+
+controller.init();
