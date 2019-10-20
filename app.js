@@ -97,7 +97,9 @@ var UIController = (function(){
         totalIncome: '.budget__income--value',
         totalExpense: '.budget__expenses--value',
         budgetConatiner: '.budget__value',
-        expensePercentage: '.budget__expenses--percentage'
+        expensePercentage: '.budget__expenses--percentage',
+        listContainer: '.container',
+        deleteButton: '.ion-ios-close-outline'
     };
 
     return {
@@ -119,7 +121,7 @@ var UIController = (function(){
             }
             else if(type == 'exp'){
                 element = DOMstrings.expenseContainer;
-                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">%exp%%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
 
             //Replace the placeholder text with some actual data
@@ -184,6 +186,8 @@ var controller = (function(budgetCtrl,UICtrl){
                 ctrlAddItem();
               }
         });
+
+        document.querySelector(DOMstrings.listContainer).addEventListener('click', ctrlDeleteItem)
     };
 
     var updateBudget = function(){
@@ -214,6 +218,24 @@ var controller = (function(budgetCtrl,UICtrl){
 
             //4. Update the budget
             updateBudget();
+        }
+    };
+
+    var ctrlDeleteItem = function(event){
+        var DOMstrings = UIController.getDOMstrings();
+        var itemID;
+
+        if('.'+event.target.className == DOMstrings.deleteButton)
+        {
+            itemID = event.target.parekjlntNode.parentNode.parentNode.parentNode.id;
+            if(itemID){
+
+                //1. Delete the item from the data structure
+                
+                //2. Delete the item from the UI
+                document.querySelector('#'+itemID).parentNode.remove(document.querySelector('#'+itemID));
+                //3. Update and show the new budget
+            }
         }
     };
 
